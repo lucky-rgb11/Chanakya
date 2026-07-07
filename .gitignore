@@ -9,9 +9,19 @@ frontend/dist/
 
 # Environment files
 .env
-.env.*
+.env.local
+.env.*.local
 backend/.env
+backend/.env.local
+backend/.env.*.local
 frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Allow example env files
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 
 # Logs
 npm-debug.log*
