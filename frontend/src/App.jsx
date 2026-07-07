@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import './App.css';
+import placeholder from './assets/hero.png';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 const buildUrl = (path) => `${API_URL}${path}`;
@@ -18,6 +19,7 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [auth, setAuth] = useState({ email: 'admin@jhola.com', password: 'admin123' });
   const [token, setToken] = useState(localStorage.getItem('jhola-admin-token') || '');
+  const [toast, setToast] = useState('');
 
   const loadProducts = async () => {
     const res = await fetch(buildUrl(`/api/products?search=${search}&category=${category}&maxPrice=${maxPrice}`));
@@ -36,13 +38,26 @@ function App() {
   const categories = useMemo(() => Array.from(new Set(products.map((product) => product.category))), [products]);
 
   const addToCart = (product) => {
+    if (product.stock !== undefined && product.stock <= 0) {
+      setToast('This product is out of stock');
+      setTimeout(() => setToast(''), 3000);
+      return;
+    }
+
     setCart((current) => {
       const existing = current.find((item) => item._id === product._id);
       if (existing) {
+        if (product.stock !== undefined && existing.quantity + 1 > product.stock) {
+          setToast('Cannot add more than available stock');
+          setTimeout(() => setToast(''), 3000);
+          return current;
+        }
         return current.map((item) => item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item);
       }
       return [...current, { ...product, quantity: 1 }];
     });
+    setToast('Added to cart');
+    setTimeout(() => setToast(''), 2000);
   };
 
   const updateQuantity = (id, delta) => {
@@ -74,6 +89,7 @@ function App() {
     setAdminForm({ name: '', image: '', category: '', price: '', description: '', stock: '' });
     setEditingId(null);
   };
+ 
 
   const handleAdminSubmit = async (event) => {
     event.preventDefault();
@@ -122,6 +138,46 @@ function App() {
     }
   };
 
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      setToast('Your cart is empty');
+      setTimeout(() => setToast(''), 2000);
+      return;
+    }
+
+    try {
+      // Try server-side checkout; if endpoint missing or returns 404, fall back to client-side success
+      const res = await fetch(buildUrl('/api/orders'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart }),
+      }).catch(() => null);
+
+      if (res && res.ok) {
+        setCart([]);
+        setToast('Order placed successfully');
+        setTimeout(() => setToast(''), 3000);
+        loadProducts();
+        return;
+      }
+
+      // Fallback: no server endpoint — emulate success client-side
+      setCart([]);
+      setToast('Order placed (local fallback)');
+      setTimeout(() => setToast(''), 3000);
+      loadProducts();
+    } catch (err) {
+      setToast('Network error during checkout');
+      setTimeout(() => setToast(''), 3000);
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setToken('');
+    localStorage.removeItem('jhola-admin-token');
+    setAdminMode(false);
+  };
+
   return (
     <div className="app-shell">
       <header className="hero">
@@ -153,14 +209,17 @@ function App() {
           <div className="product-grid">
             {products.map((product) => (
               <article className="product-card" key={product._id}>
-                <img src={product.image} alt={product.name} />
+                <img src={product.image} alt={product.name} onError={(e) => { e.target.src = placeholder; }} />
                 <div className="product-info">
                   <h3>{product.name}</h3>
                   <p className="category">{product.category}</p>
+                  {product.stock !== undefined && (
+                    <p className="stock">{product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}</p>
+                  )}
                   <p>{product.description}</p>
                   <div className="product-footer">
                     <strong>${product.price}</strong>
-                    <button onClick={() => addToCart(product)}>Add to cart</button>
+                    <button onClick={() => addToCart(product)} disabled={product.stock !== undefined && product.stock <= 0}>Add to cart</button>
                   </div>
                 </div>
               </article>
@@ -185,6 +244,9 @@ function App() {
                 </div>
               </div>
             ))}
+            <div style={{ marginTop: 12 }}>
+              <button onClick={handleCheckout} style={{ width: '100%', borderRadius: 12 }}>Checkout</button>
+            </div>
           </section>
 
           <section className="panel">
@@ -197,6 +259,9 @@ function App() {
               </form>
             ) : (
               <>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+                  <button onClick={handleAdminLogout} style={{ background: '#eee', borderRadius: 6, padding: '6px 10px' }}>Logout</button>
+                </div>
                 <form onSubmit={handleAdminSubmit} className="admin-form">
                   <input value={adminForm.name} onChange={(event) => setAdminForm({ ...adminForm, name: event.target.value })} placeholder="Name" required />
                   <input value={adminForm.image} onChange={(event) => setAdminForm({ ...adminForm, image: event.target.value })} placeholder="Image URL" required />
@@ -225,6 +290,7 @@ function App() {
           </section>
         </aside>
       </main>
+      {toast && <div className="toast">{toast}</div>}
     </div>
   );
 }

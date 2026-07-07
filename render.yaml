@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: chanakya-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: MONGO_URI
+        fromEnv: MONGO_URI
+      - key: JWT_SECRET
+        fromEnv: JWT_SECRET
+      - key: FRONTEND_URL
+        fromEnv: FRONTEND_URL
