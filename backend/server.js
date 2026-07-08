@@ -31,42 +31,42 @@ const connectDB = async () => {
     productStore = [
       {
         _id: '1',
-        name: 'Urban Tote',
-        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-        category: 'Bags',
-        price: 49,
-        description: 'A sleek everyday tote for commuting and errands.',
-        stock: 18,
+        name: 'Cotton Kurta',
+        image: 'https://images.unsplash.com/photo-1520975685569-6b1b6f8f6d9b?auto=format&fit=crop&w=800&q=80',
+        category: 'Apparel',
+        price: 799,
+        description: 'Comfortable handloom cotton kurta for everyday wear.',
+        stock: 30,
       },
       {
         _id: '2',
-        name: 'Trail Backpack',
-        image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
-        category: 'Accessories',
-        price: 79,
-        description: 'Weather-ready backpack with plenty of storage.',
-        stock: 12,
+        name: 'Canvas Jhola Bag',
+        image: 'https://images.unsplash.com/photo-1508337196892-7b0d3b0f0b2c?auto=format&fit=crop&w=800&q=80',
+        category: 'Bags',
+        price: 499,
+        description: 'Durable canvas bag inspired by traditional Indian jholas.',
+        stock: 25,
       },
       {
         _id: '3',
-        name: 'Luna Sneakers',
-        image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80',
+        name: 'Kolhapuri Chappal',
+        image: 'https://images.unsplash.com/photo-1528701800489-476f7d3d4f3a?auto=format&fit=crop&w=800&q=80',
         category: 'Footwear',
-        price: 89,
-        description: 'Lightweight comfort sneakers with premium cushioning.',
-        stock: 15,
+        price: 1299,
+        description: 'Handcrafted leather Kolhapuri chappals with classic styling.',
+        stock: 20,
       },
       {
         _id: '4',
-        name: 'Glow Lamp',
-        image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
+        name: 'Brass Diya Lamp',
+        image: 'https://images.unsplash.com/photo-1556912990-9f8c1a1a6b4d?auto=format&fit=crop&w=800&q=80',
         category: 'Home',
-        price: 39,
-        description: 'Warm ambient lighting for cozy corners.',
-        stock: 9,
+        price: 399,
+        description: 'Traditional brass diya to brighten your home during festivals.',
+        stock: 40,
       },
     ];
-    userStore = [{ _id: 'admin', name: 'Admin', email: 'admin@jhola.com', password: bcrypt.hashSync('admin123', 10), isAdmin: true }];
+    userStore = [{ _id: 'admin', name: 'Vibhor Sihag', email: 'vibhorsihag@gmail.com', password: bcrypt.hashSync('admin123', 10), isAdmin: true }];
   }
 };
 
@@ -77,47 +77,47 @@ const seedData = async () => {
     const count = await Product.countDocuments();
     if (count === 0) {
       const products = [
-        {
-          name: 'Urban Tote',
-          image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-          category: 'Bags',
-          price: 49,
-          description: 'A sleek everyday tote for commuting and errands.',
-          stock: 18,
-        },
-        {
-          name: 'Trail Backpack',
-          image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
-          category: 'Accessories',
-          price: 79,
-          description: 'Weather-ready backpack with plenty of storage.',
-          stock: 12,
-        },
-        {
-          name: 'Luna Sneakers',
-          image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80',
-          category: 'Footwear',
-          price: 89,
-          description: 'Lightweight comfort sneakers with premium cushioning.',
-          stock: 15,
-        },
-        {
-          name: 'Glow Lamp',
-          image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
-          category: 'Home',
-          price: 39,
-          description: 'Warm ambient lighting for cozy corners.',
-          stock: 9,
-        },
-      ];
+          {
+            name: 'Cotton Kurta',
+            image: 'https://images.unsplash.com/photo-1520975685569-6b1b6f8f6d9b?auto=format&fit=crop&w=800&q=80',
+            category: 'Apparel',
+            price: 799,
+            description: 'Comfortable handloom cotton kurta for everyday wear.',
+            stock: 30,
+          },
+          {
+            name: 'Canvas Jhola Bag',
+            image: 'https://images.unsplash.com/photo-1508337196892-7b0d3b0f0b2c?auto=format&fit=crop&w=800&q=80',
+            category: 'Bags',
+            price: 499,
+            description: 'Durable canvas bag inspired by traditional Indian jholas.',
+            stock: 25,
+          },
+          {
+            name: 'Kolhapuri Chappal',
+            image: 'https://images.unsplash.com/photo-1528701800489-476f7d3d4f3a?auto=format&fit=crop&w=800&q=80',
+            category: 'Footwear',
+            price: 1299,
+            description: 'Handcrafted leather Kolhapuri chappals with classic styling.',
+            stock: 20,
+          },
+          {
+            name: 'Brass Diya Lamp',
+            image: 'https://images.unsplash.com/photo-1556912990-9f8c1a1a6b4d?auto=format&fit=crop&w=800&q=80',
+            category: 'Home',
+            price: 399,
+            description: 'Traditional brass diya to brighten your home during festivals.',
+            stock: 40,
+          },
+        ];
 
       await Product.insertMany(products);
     }
 
-    const adminExists = await User.findOne({ email: 'admin@jhola.com' });
+    const adminExists = await User.findOne({ email: 'vibhorsihag@gmail.com' });
     if (!adminExists) {
       const hashed = await bcrypt.hash('admin123', 10);
-      await User.create({ name: 'Admin', email: 'admin@jhola.com', password: hashed, isAdmin: true });
+      await User.create({ name: 'Vibhor Sihag', email: 'vibhorsihag@gmail.com', password: hashed, isAdmin: true });
     }
   }
 };

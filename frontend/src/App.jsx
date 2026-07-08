@@ -17,7 +17,7 @@ function App() {
   const [adminMode, setAdminMode] = useState(false);
   const [adminForm, setAdminForm] = useState({ name: '', image: '', category: '', price: '', description: '', stock: '' });
   const [editingId, setEditingId] = useState(null);
-  const [auth, setAuth] = useState({ email: 'admin@jhola.com', password: 'admin123' });
+  const [auth, setAuth] = useState({ email: 'vibhorsihag@gmail.com', password: 'admin123' });
   const [token, setToken] = useState(localStorage.getItem('jhola-admin-token') || '');
   const [toast, setToast] = useState('');
 
@@ -178,17 +178,25 @@ function App() {
     setAdminMode(false);
   };
 
+  const formatINR = (value) => {
+    try {
+      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
+    } catch {
+      return `₹${Number(value).toFixed(2)}`;
+    }
+  };
+
   return (
     <div className="app-shell">
       <header className="hero">
         <div>
-          <p className="eyebrow">Jhola • Modern essentials</p>
-          <h1>Find your next favorite everyday piece.</h1>
-          <p>Search, filter, and shop the latest lifestyle finds in a smooth storefront experience.</p>
+          <p className="eyebrow">Jhola • Indian essentials</p>
+          <h1>Discover handcrafted and everyday Indian goods.</h1>
+          <p>Search, filter, and shop locally inspired products curated for India.</p>
         </div>
         <div className="hero-card">
           <h2>Cart total</h2>
-          <p className="price">${total.toFixed(2)}</p>
+          <p className="price">{formatINR(total)}</p>
           <span>{cart.reduce((sum, item) => sum + item.quantity, 0)} items</span>
         </div>
       </header>
@@ -218,7 +226,7 @@ function App() {
                   )}
                   <p>{product.description}</p>
                   <div className="product-footer">
-                    <strong>${product.price}</strong>
+                    <strong>{formatINR(product.price)}</strong>
                     <button onClick={() => addToCart(product)} disabled={product.stock !== undefined && product.stock <= 0}>Add to cart</button>
                   </div>
                 </div>
@@ -234,7 +242,7 @@ function App() {
               <div className="cart-item" key={item._id}>
                 <div>
                   <strong>{item.name}</strong>
-                  <p>${item.price} each</p>
+                  <p>{formatINR(item.price)} each</p>
                 </div>
                 <div className="cart-actions">
                   <button onClick={() => updateQuantity(item._id, -1)}>-</button>
