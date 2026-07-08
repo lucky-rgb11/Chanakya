@@ -38,6 +38,21 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
+          echo "### Deploy diagnostics"
+          echo "PWD: $(pwd)"
+          echo "NETLIFY_SITE_ID=${NETLIFY_SITE_ID}"
+          if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+            echo "ERROR: NETLIFY_AUTH_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "ERROR: NETLIFY_SITE_ID is not set"
+            exit 1
+          fi
+          echo "Listing frontend/dist contents"
+          ls -la frontend/dist || true
+          ls -la frontend/dist/assets || true
+          npm install netlify-cli --no-audit --no-fund
           npx netlify-cli deploy --dir=frontend/dist --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --prod
 
       - name: Trigger Render backend deploy
@@ -49,6 +64,7 @@ jobs:
             echo "Render secrets not configured; skipping Render deploy";
             exit 0;
           fi
+          echo "Triggering Render deploy for service $RENDER_SERVICE_ID"
           curl -s -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
