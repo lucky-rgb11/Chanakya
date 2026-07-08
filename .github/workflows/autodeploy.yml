@@ -19,7 +19,14 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: |
-          npm ci
+          echo "### CI DIAGNOSTICS: node & npm versions and workspace listing"
+          node -v || true
+          npm -v || true
+          echo "### listing frontend directory"
+          ls -la
+          echo "### installing dependencies"
+          npm ci --no-audit --no-fund
+          echo "### building frontend"
           npm run build
 
       - name: Deploy frontend to Netlify
