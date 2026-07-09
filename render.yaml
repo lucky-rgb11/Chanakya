@@ -2,6 +2,7 @@ services:
   - type: web
     name: chanakya-backend
     env: node
+    nodeVersion: 18
     region: oregon
     plan: free
     buildCommand: npm install

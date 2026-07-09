@@ -11,8 +11,18 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.CORS_ORIGIN].filter(Boolean);
 
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/jhola';

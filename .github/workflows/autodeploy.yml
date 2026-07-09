@@ -14,24 +14,25 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Build frontend
         working-directory: frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           echo "### CI DIAGNOSTICS: node & npm versions and workspace listing"
           node -v || true
           npm -v || true
           echo "### listing frontend directory"
           ls -la || true
-          if [ -d "frontend/dist" ] || [ -d "dist" ]; then
-            echo "Using committed frontend/dist; skipping build"
-            ls -la frontend/dist || ls -la dist || true
+          if [ -z "$VITE_API_URL" ]; then
+            echo "WARNING: VITE_API_URL is not set; build will use the default relative API path"
           else
-            echo "No committed dist found — installing and building"
-            npm ci --no-audit --no-fund
-            npm run build
+            echo "Building frontend with VITE_API_URL=$VITE_API_URL"
           fi
+          npm ci --no-audit --no-fund
+          VITE_API_URL=$VITE_API_URL npm run build
 
       - name: Deploy frontend to Netlify
         env:

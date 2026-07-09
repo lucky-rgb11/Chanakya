@@ -78,7 +78,7 @@ I verified the app locally and completed the following checks:
 What remains for production:
 
 - Set Render environment variables (`MONGO_URI`, `JWT_SECRET`, `FRONTEND_URL`) in the Render dashboard.
-- Add GitHub Actions secrets for CI/CD: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`, `RENDER_API_KEY`, `RENDER_SERVICE_ID`.
+- Add GitHub Actions secrets for CI/CD: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`, `VITE_API_URL`, `RENDER_API_KEY`, `RENDER_SERVICE_ID`.
 - Set Netlify env var `VITE_API_URL` to your Render URL (e.g. `https://chanakyaka-jhola.onrender.com`).
 
 After those secrets/envs are set you can trigger the `autodeploy.yml` workflow (push a commit or run via `gh workflow run`) to deploy both services.
