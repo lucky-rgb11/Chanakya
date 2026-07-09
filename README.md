@@ -9,7 +9,7 @@ A simple e-commerce product listing app with search/filter, shopping cart, and a
 - Admin panel with protected login and CRUD operations for products
 - Backend API built with Express and MongoDB (with fallback in-memory store)
 - Frontend built with React and Vite
-- Deployment-ready configuration for Render (backend) and Netlify (frontend)
+- Deployment configuration for Render/Netlify has been removed from this repository
 
 ## Getting started
 
@@ -75,13 +75,11 @@ I verified the app locally and completed the following checks:
 - API health: `GET /api/health` returns `{ ok: true, message: 'Jhola API is live' }` on the local server.
 - Order placement: `POST /api/orders` accepts cart items and returns a success response (fallback when MongoDB unavailable).
 
-What remains for production:
+Deployment removed from repo:
 
-- Set Render environment variables (`MONGO_URI`, `JWT_SECRET`, `FRONTEND_URL`) in the Render dashboard.
-- Add GitHub Actions secrets for CI/CD: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`, `VITE_API_URL`, `RENDER_API_KEY`, `RENDER_SERVICE_ID`.
-- Set Netlify env var `VITE_API_URL` to your Render URL (e.g. `https://chanakyaka-jhola.onrender.com`).
+- The repository no longer includes automatic deploy configs for Render or Netlify. Run the app locally or add deployment configs for your chosen host.
 
-After those secrets/envs are set you can trigger the `autodeploy.yml` workflow (push a commit or run via `gh workflow run`) to deploy both services.
+After removing the automated deploys, you can still deploy manually by hosting the backend and frontend on any provider. See `DEPLOY.md` for local run guidance.
 
 ## Quick local verification commands
 
