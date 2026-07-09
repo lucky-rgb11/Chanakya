@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: chanakya-backend
+    env: node
+    plan: free
+    repo: lucky-rgb11/Chanakya
+    branch: main
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: MONGO_URI
+        fromSecret: MONGO_URI
+      - key: JWT_SECRET
+        fromSecret: JWT_SECRET
